@@ -12,12 +12,16 @@ public class UserDaoImpl implements UserDao {
     public User getUser(String email, String password) {
         logger.debug("调用了 getUser()，参数为{}, {}", email, password);
 
-        User user = new User();
-        user.setUsername("admin");
-        user.setEmail(email);
+        User user = null;
+        if ("admin@qq.com".equals(email) && "123".equals(password)) {
+            user = new User();
+            user.setUsername("admin");
+            user.setEmail(email);
+            logger.info("成功获取 {} 信息", user.getUsername());
+        } else {
+            logger.warn("获取 {} 失败", email);
+        }
 
-        logger.info("成功获取 {} 信息", user.getUsername());
-        logger.warn("获取 {} 失败", user.getEmail());
         return user;
     }
 }
