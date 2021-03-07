@@ -6,9 +6,9 @@ import com.crx.cbdj.entity.User;
 import com.crx.cbdj.service.UserService;
 
 public class UserServiceImpl implements UserService {
+    private UserDao userDao = SpringContext.getBean("userDao");
+
     public User login(String email, String password) {
-        SpringContext context = new SpringContext();
-        UserDao userDao = (UserDao) context.getBean("userDao");
         return userDao.getUser(email, password);
     }
 }
