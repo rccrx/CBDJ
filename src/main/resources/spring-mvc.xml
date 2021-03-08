@@ -24,4 +24,19 @@
     </bean>
 
     <mvc:resources mapping="/assets/**" location="/assets/" cache-period="31536000" />
+
+    <!--  配置拦截器  -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/assets/**"/>
+            <bean class="com.crx.cbdj.web.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.crx.cbdj.web.interceptor.PermissionInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

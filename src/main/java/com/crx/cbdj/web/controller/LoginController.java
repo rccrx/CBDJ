@@ -26,8 +26,8 @@ public class LoginController {
     public String login() {
         logger.debug("调用了无参数login()方法");
         /*
-        返回值指的是直接跳转到页面【"/WEB-INF/views"+login+".jsp"】，
-        前后两个字符串是spring-mvc.xml配置的prefix和suffix
+        如果写成“login”而不是“/login”，则会出现错误“/WEB-INF/viewslogin.jsp未找到“，
+        不知道是不是因为tomcat的URL是“http://localhost:8080/CBDJ_war_exploded/”非“http://localhost:8080/”。
          */
         return "/login";
     }
@@ -44,5 +44,11 @@ public class LoginController {
             req.setAttribute("message", "用户名或密码错误"); // 用于在前端页面中使用jsp获取这个数据
             return login();
         }
+    }
+
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest httpServletRequest) {
+        httpServletRequest.getSession().invalidate();
+        return login();
     }
 }
