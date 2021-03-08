@@ -1,38 +1,48 @@
 package com.crx.cbdj.web.controller;
 
-import com.crx.cbdj.common.context.SpringContext;
-import com.crx.cbdj.dao.UserDao;
 import com.crx.cbdj.entity.User;
 import com.crx.cbdj.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
-public class LoginController extends HttpServlet {
-    private UserService userService = SpringContext.getBean("userService");
+@Controller
+public class LoginController {
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    /*
+    自动装载，相当于"private UserService userService = SpringContext.getBean("userService");"，
+    所以UserServiceImpl的@Service不用设置value。
+     */
+    @Autowired
+    private UserService userService;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        User user = userService.login(email, password);
-        System.out.println(user);
+    @RequestMapping(value = {"", "login"}, method = RequestMethod.GET)
+    public String login() {
+        logger.debug("调用了无参数login()方法");
+        /*
+        返回值指的是直接跳转到页面【"/WEB-INF/views"+login+".jsp"】，
+        前后两个字符串是spring-mvc.xml配置的prefix和suffix
+         */
+        return "/login";
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public String login(@RequestParam(required = true) String email, @RequestParam(required = true) String password, HttpServletRequest req) {
+        logger.debug("调用了有参数login()方法");
         User user = userService.login(email, password);
 
         if (user != null) {
-            resp.sendRedirect("./main.jsp"); // 如果这里写成"/main.jsp"，则路径是"http://localhost:8080/main.jsp"，不是"http://localhost:8080/CBDJ_war_exploded/main.jsp"
+            req.getSession().setAttribute("user", user);
+            return "redirect:/main"; // 重定向
         } else {
             req.setAttribute("message", "用户名或密码错误"); // 用于在前端页面中使用jsp获取这个数据
-            req.getRequestDispatcher("./index.jsp").forward(req, resp);
+            return login();
         }
     }
 }
