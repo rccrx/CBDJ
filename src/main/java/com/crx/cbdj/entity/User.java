@@ -3,9 +3,18 @@ package com.crx.cbdj.entity;
 import java.io.Serializable;
 
 public class User implements Serializable {
+    private Long userId;
     private String username;
     private String password;
     private String email;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getUsername() {
         return username;
@@ -34,7 +43,8 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';

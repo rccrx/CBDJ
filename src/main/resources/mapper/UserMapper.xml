@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crx.cbdj.dao.UserDao">
+    <select id="selectAll" resultType="User">
+        SELECT
+            a.id AS userId,
+            a.username,
+            a.password,
+            a.email
+        FROM
+            tb_user AS a
+    </select>
+
+    <insert id="insert">
+        INSERT INTO tb_user (
+            `username`,
+            `password`,
+            `email`
+        )
+        VALUES
+        (
+        #{username},
+        #{password},
+        #{email}
+        )
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM tb_user
+        WHERE id = #{userId}
+    </delete>
+
+    <select id="getById" resultType="User">
+        SELECT
+        a.id AS userId,
+        a.username,
+        a.password,
+        a.email
+        FROM
+        tb_user AS a
+        WHERE
+        a.id = #{userId}
+    </select>
+
+    <update id="update">
+        UPDATE tb_user
+        SET
+        username = #{username},
+        password = #{password},
+        email = #{email}
+        WHERE id = #{userId}
+    </update>
+
+    <select id="selectByUsername" resultType="User">
+        SELECT
+        a.id AS userId,
+        a.username,
+        a.password,
+        a.email
+        FROM
+        tb_user AS a
+        WHERE
+        a.username LIKE CONCAT('%', #{username}, '%')
+    </select>
+
+    <select id="getByEmail" resultType="User">
+        SELECT
+        a.id AS userId,
+        a.username,
+        a.password,
+        a.email
+        FROM
+        tb_user AS a
+        WHERE
+        a.email = #{email}
+    </select>
+
+
+    <select id="getUser" resultType="User">
+        SELECT
+        a.id AS userId,
+        a.username,
+        a.password,
+        a.email
+        FROM
+        tb_user AS a
+        WHERE
+        a.email = #{email} and a.password = #{password}
+    </select>
+</mapper>
