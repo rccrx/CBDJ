@@ -31,11 +31,13 @@
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/login"/>
             <mvc:exclude-mapping path="/assets/**"/>
+            <mvc:exclude-mapping path="/business/**"/>
             <bean class="com.crx.cbdj.web.interceptor.LoginInterceptor" />
         </mvc:interceptor>
 
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/business/**"/>
             <bean class="com.crx.cbdj.web.interceptor.PermissionInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>

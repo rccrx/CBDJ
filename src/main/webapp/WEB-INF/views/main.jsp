@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <tite>cbdj首页</tite>
+    <title>cbdj首页</title>
 </head>
 <body>
-    这是首页内容
+    这是首页内容，欢迎${user.username}, ${user.email}
 </body>
 </html>
